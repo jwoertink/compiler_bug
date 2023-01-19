@@ -1,0 +1,31 @@
+name: compiler_bug
+version: 0.1.0
+
+authors:
+  - Jeremy Woertink <jeremywoertink@gmail.com>
+
+targets:
+  app:
+    main: src/compiler_bug.cr
+
+crystal: 1.6.2
+
+dependencies:
+  lucky:
+    github: luckyframework/lucky
+    version: ~> 1.0.0-rc1
+  avram:
+    github: luckyframework/avram
+    version: ~> 1.0.0-rc1
+  carbon:
+    github: luckyframework/carbon
+    version: ~> 0.3.0
+  carbon_sendgrid_adapter:
+    github: luckyframework/carbon_sendgrid_adapter
+    version: ~> 0.3.0
+  lucky_env:
+    github: luckyframework/lucky_env
+    version: ~> 0.1.4
+  lucky_task:
+    github: luckyframework/lucky_task
+    version: ~> 0.1.1
