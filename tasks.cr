@@ -16,10 +16,7 @@ require "lucky_task"
 require "./tasks/**"
 
 # Load migrations
-require "./db/migrations/**"
-
 # Load Lucky tasks (dev, routes, etc.)
 require "lucky/tasks/**"
-require "avram/lucky/tasks"
 
 LuckyTask::Runner.run

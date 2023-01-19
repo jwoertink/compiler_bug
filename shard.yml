@@ -14,15 +14,6 @@ dependencies:
   lucky:
     github: luckyframework/lucky
     version: ~> 1.0.0-rc1
-  avram:
-    github: luckyframework/avram
-    version: ~> 1.0.0-rc1
-  carbon:
-    github: luckyframework/carbon
-    version: ~> 0.3.0
-  carbon_sendgrid_adapter:
-    github: luckyframework/carbon_sendgrid_adapter
-    version: ~> 0.3.0
   lucky_env:
     github: luckyframework/lucky_env
     version: ~> 0.1.4
