@@ -1,40 +1,21 @@
-FROM crystallang/crystal:1.4.1
+FROM crystallang/crystal:1.1.0
 
-# Install utilities required to make this Dockerfile run
+ENV DEBIAN_FRONTEND=noninteractive
+    # wget https://github.com/llvm/llvm-project/releases/download/llvmorg-10.0.0/clang+llvm-10.0.0-x86_64-linux-gnu-ubuntu-18.04.tar.xz -O llvm-10.tar.xz && \
+    # tar -xvf /home/junk/llvm-10.tar.xz && \
+    # LLVM_CONFIG=../llvm-10/bin/llvm-config
+
 RUN apt-get update && \
-    apt-get install -y wget gunzip
-
-# Add the nodesource ppa to apt. Update this to change the nodejs version.
-RUN wget https://deb.nodesource.com/setup_16.x -O- | bash
-
-# Apt installs:
-# - nodejs (from above ppa) is required for front-end apps.
-# - Postgres cli tools are required for lucky-cli.
-# - tmux is required for the Overmind process manager.
-RUN apt-get update && \
-    apt-get install -y nodejs postgresql-client tmux && \
+    apt-get install -y g++ git make wget tar llvm-10 lldb-10 llvm-10-dev libllvm10 llvm-10-runtime && \
     rm -rf /var/lib/apt/lists/*
 
-# NPM global installs:
-#  - Yarn is the default package manager for the node component of a lucky
-#    browser app.
-#  - Mix is the default asset compiler.
-RUN npm install -g yarn mix
+#RUN wget https://github.com/crystal-lang/crystal/releases/download/1.1.0/crystal-1.1.0-1-linux-x86_64.tar.gz -O crystal-1.1.0.tar.gz && \
+#    tar -xf crystal-1.1.0.tar.gz
 
-# Installs overmind, not needed if nox is the process manager.
-RUN wget https://github.com/DarthSim/overmind/releases/download/v2.2.2/overmind-v2.2.2-linux-amd64.gz && \
-    gunzip overmind-v2.2.2-linux-amd64.gz && \
-    mv overmind-v2.2.2-linux-amd64 /usr/bin/overmind && \
-    chmod +x /usr/bin/overmind
-
-# Install lucky cli, TODO: fetch current lucky version from source code.
-WORKDIR /lucky/cli
-RUN git clone https://github.com/luckyframework/lucky_cli . && \
-    git checkout v0.30.0 && \
-    shards build --without-development && \
-    cp bin/lucky /usr/bin
+RUN git clone https://github.com/crystal-lang/crystal.git && \
+    cd crystal && git checkout 1.1.1 && \
+    make clean crystal && \
+    cp bin/crystal /usr/local/bin
 
 WORKDIR /app
-ENV DATABASE_URL=postgres://postgres:postgres@host.docker.internal:5432/postgres
 EXPOSE 5001
-

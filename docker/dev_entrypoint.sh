@@ -28,26 +28,13 @@ if ! [ -d bin ] ; then
   mkdir bin
 fi
 
-echo "Installing npm packages..."
-yarn install
-
 if ! shards check ; then
   echo "Installing shards..."
   shards install
 fi
 
-echo "Waiting for postgres to be available..."
-./docker/wait-for-it.sh -q postgres:5432
+echo "Building"
+exec crystal build --release src/start_server.cr
 
-if ! psql -d "$DATABASE_URL" -c '\d migrations' > /dev/null ; then
-  echo "Finishing database setup..."
-  lucky db.migrate
-fi
-
-if [ -S .overmind.sock ] ; then
-  echo "Removing old overmind socket file..."
-  rm .overmind.sock
-fi
-
-echo "Starting lucky dev server..."
-exec lucky dev
+echo "Running"
+exec ./start_server
